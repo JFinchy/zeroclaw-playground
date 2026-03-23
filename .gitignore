@@ -1,0 +1,22 @@
+# ZeroClaw Secrets & State
+.secret_key
+daemon_state.json
+*.log
+*.db
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Workspace Data & Memory (Personal Information)
+workspace/data/
+workspace/memory/
+workspace/sessions/
+workspace/state/
+workspace/cron/

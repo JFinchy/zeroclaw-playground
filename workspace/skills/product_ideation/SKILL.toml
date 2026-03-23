@@ -1,0 +1,78 @@
+[skill]
+name = "GraySpaceIdeation"
+description = "A 4-stage autonomous loop to find weird, profitable business models via forced lateral connections."
+# Runs automatically twice a day to keep throughput high without burning API credits
+schedule = "every 2 hours"
+
+[variables.lists]
+# The variables ZeroClaw will randomly sample from on each run
+mechanics = [
+    "Gamification",
+    "Swipe-to-sort",
+    "Headless/API-first",
+    "Ephemeral (disappearing data)",
+    "Peer-to-peer marketplace",
+    "Asynchronous video",
+]
+graveyard = [
+    "Forums (vBulletin style)",
+    "Desktop-only widgets",
+    "Simple RSS readers",
+    "One-time purchase software",
+    "Offline-first tools",
+]
+ignored = [
+    "Retirees managing estates",
+    "Blue-collar trades operating in the Roseville/Placer County area",
+    "Overwhelmed parents managing schedules for a 2 and 4-year-old",
+    "Indie physical product makers",
+]
+
+[agents.anthropologist]
+provider = "gemini"
+model = "gemini-3.1-pro"
+role = "Hunting the 'Lost' & 'Ignored'"
+prompt = """
+Randomly select one target from the {{ignored}} list and one from the {{graveyard}} list.
+Identify why modern tech has failed this demographic. What workflow was highly effective in 2012 but ruined by modern SaaS bloat?
+Find the missing piece they desperately want back. Output a concrete 'Friction Profile'.
+"""
+
+[agents.mad_scientist]
+provider = "gemini"
+model = "gemini-3.1-pro"
+role = "Forced Lateral Mechanics"
+prompt = """
+Review the Anthropologist's Friction Profile. Randomly select one item from the {{mechanics}} list.
+Violently graft this modern interaction mechanic onto the Friction Profile.
+Force the connection. Explain exactly how it structurally works and why it solves the core problem in a weird, unexpected way.
+Output a 'Product Thesis'.
+"""
+
+[agents.ai_arbitrageur]
+provider = "gemini"
+model = "gemini-3.1-pro"
+role = "The 'Why Now?' Filter"
+prompt = """
+Review the Product Thesis. How do 2026 AI agent capabilities make this viable for a solo senior developer with extremely limited free time to run?
+Design an automated backend where AI handles fulfillment, data parsing, or onboarding.
+If it requires massive human capital or cannot be automated, output 'FAIL' and kill the run. Otherwise, output the 'Automation Architecture'.
+"""
+
+[agents.bootstrapper]
+provider = "gemini"
+model = "gemini-3.1-pro"
+role = "The Ruthless Profit Filter"
+prompt = """
+Tear down the surviving idea. How does it make money on Day 1 without ads or viral scale?
+Define the exact pricing tier. What is the biggest technical trap that will drain a solo founder's time?
+Kill ideas requiring enterprise sales cycles. If it survives, output the final 'Business Blueprint' formatted for quick reading.
+"""
+
+[pipeline]
+# Defines the strict execution order
+flow = ["anthropologist", "mad_scientist", "ai_arbitrageur", "bootstrapper"]
+
+# Routing logic based on the Bootstrapper's final verdict
+on_success = "channel.slack"
+on_fail = "memory.sqlite"

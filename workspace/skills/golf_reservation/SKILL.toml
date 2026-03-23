@@ -1,0 +1,3 @@
+[skill]
+name = "golf-reservation"
+description = "Scans local Roseville/Placer County golf courses for completely open blocks of tee times, optimizing for solo play without getting paired up."
